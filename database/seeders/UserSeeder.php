@@ -19,7 +19,8 @@ class UserSeeder extends Seeder
             'name' => 'Harsha Rauniyar',
             'email' => 'harsharauniyar1@gmail.com',
             'password' => Hash::make('intuji123'),
-            'role' => 'super_admin'
+            'role' => 'super_admin',
+            'username' => 'harsharauniyar'
         ]);
     }
 }

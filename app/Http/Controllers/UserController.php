@@ -13,9 +13,10 @@ class UserController extends Controller
         try {
             $fields = $request->validate([
                 'name' => ['required', 'min:5', 'max:25'],
-                'email' => ['required'],
+                'email' => ['required', 'unique:users,email'],
                 'password' => ['required', 'min:8'],
-                'role' => ['required']
+                'role' => ['required'],
+                'username' => ['required', 'unique:users,username']
             ]);
     
             $fields['password'] = Hash::make($fields['password']);
@@ -29,6 +30,19 @@ class UserController extends Controller
 
     //Login controller User Action
     public function login(Request $request){
+        $credentials = $request -> validate([
+            'username' => ['required'],
+            'password' => ['required']
+        ]);
+        if (auth()->attempt(['username'=> $credentials['username'], 'password'=> $credentials['password']])){
+            $user = auth()->user();
+            $token = $user -> createToken('associate_harsha_rauniyar')->plainTextToken;
+            return response()->json([
+                'user' => $user,
+                'token' => $token
+            ]);
+        }
+        return response()->json(['message' => 'Incorrect credentials. Please try again'], 401);
 
     }
 }
