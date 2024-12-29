@@ -18,7 +18,8 @@ class UserSeeder extends Seeder
         User::factory()->create([
             'name' => 'Harsha Rauniyar',
             'email' => 'harsharauniyar1@gmail.com',
-            'password' => Hash::make('intuji123')
+            'password' => Hash::make('intuji123'),
+            'role' => 'super_admin'
         ]);
     }
 }
