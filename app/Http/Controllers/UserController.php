@@ -18,14 +18,15 @@ class UserController extends Controller
                 'role' => ['required'],
                 'username' => ['required', 'unique:users,username']
             ]);
-    
+            
             $fields['password'] = Hash::make($fields['password']);
-            User::create($fields);
+            $user = User::create($fields);
+            
+            return response()->json(['message'=>'User created successfully'],200);
         }
         catch (Exception $e) {
-            print($e."Oops! Something went wrong");
+            return response()->json(['message'=>'Oops! Something went wrong'], 500);
         }
-        
     }
 
     //Login controller User Action
