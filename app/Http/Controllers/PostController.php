@@ -58,7 +58,7 @@ class PostController extends Controller
 
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Error uploading image: '
+                'message' => 'Error uploading image:'
             ], 500);
         }
     }

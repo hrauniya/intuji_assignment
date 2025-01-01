@@ -46,4 +46,23 @@ class UserController extends Controller
         return response()->json(['message' => 'Incorrect credentials. Please try again'], 401);
 
     }
+    public function viewProfile(Request $request){
+        $currentUser = $request->user->id;
+        $user = User::find($currentUser);
+        return response()->json($user,200);
+
+    }
+
+    public function updateProfile(Request $request){
+        $currentUser = $request->user->id;
+        $user = User::find($currentUser);
+        $validatedFields = $request->validate([
+            'name' => ['sometimes', 'min:5', 'max:25'],
+            'email' => ['sometimes', 'unique:users,email,' . $currentUser],
+            'username' => ['sometimes', 'unique:users,username,' . $currentUser]
+        ]);
+        $user->update($validatedFields);
+        return response()->json($user,200); 
+    }
+
 }

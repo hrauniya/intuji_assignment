@@ -17,5 +17,7 @@ Route::middleware('checkApiToken')->group(function () {
     Route::post('/posts/{id}/comments',[CommentController::class,'createComment']);
     Route::get('/posts/{id}/comments',[CommentController::class,'showComments']);
     Route::post('/posts/{id}/images', [PostController::class, 'uploadImage']);
+    Route::get('/users/profile',[UserController::class,'viewProfile']);
+    Route::patch('/users/profile',[UserController::class,'updateProfile']);
 });
 
