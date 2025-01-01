@@ -38,6 +38,28 @@ class PostController extends Controller
         return response()->json($posts,200);
     }
 
+    public function uploadImage(Request $request, $id)
+    {
+        try {
+            $post = Post::findOrFail($id);
+            if ($post->user_id !== $request->user->id) {
+                return response()->json(['message' => 'You can upload image only for your own post'], 403);
+            }
+            $request->validate([
+                'image_path' => ['required', 'image', 'mimes:jpeg,png', 'max:2048']
+            ]);
+            $path = $request->file('image_path')->store('post-images', 'public');
+            $post->update(['image_path' => $path]);
 
+            return response()->json([
+                'message' => 'Image uploaded successfully',
+                'image_path' => $path
+            ], 200);
 
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Error uploading image: '
+            ], 500);
+        }
+    }
 }

@@ -16,6 +16,6 @@ Route::middleware('checkApiToken')->group(function () {
     Route::get('/posts/{id}',[PostController::class,'show']);
     Route::post('/posts/{id}/comments',[CommentController::class,'createComment']);
     Route::get('/posts/{id}/comments',[CommentController::class,'showComments']);
+    Route::post('/posts/{id}/images', [PostController::class, 'uploadImage']);
 });
-
 

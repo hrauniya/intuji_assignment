@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Post extends Model
 {
-    protected $fillable=['title','content','user_id'];
+    protected $fillable=['title','content','user_id','image_path'];
 
     public function comments():HasMany{
         return $this->hasMany(Comment::class);
