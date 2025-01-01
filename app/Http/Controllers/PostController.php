@@ -17,25 +17,47 @@ class PostController extends Controller
     
             $postFields['user_id']= request()->user->id;
             Post::create($postFields);
+            return response()->json(['message'=>'Post created successfully'
+            ],200);
         }
         catch (Exception $e) {
-            print($e."Oops! Something went wrong");
+            return response()->json(['message' => 'Error: ' . $e->getMessage()
+            ], 500);
         }
         
     }
 
     public function index(Request $request){
-        $posts= Post::all();
-        return response()->json($posts,200);
+        try {
+            $posts= Post::all();
+            return response()->json([
+                'result'=>$posts, 
+                'message'=>'Posts fetched successfully
+            '],200);
+        }
+        catch (Exception $e) {
+            return response()->json(['message' => 'Error: ' . $e->getMessage()
+        ], 500);
+        }
     }
 
     public function show($id){
-        $user = User::find($id);
-        if (!$user){
-            return response()->json(['message' => 'User not found'], 404);
+        try {
+            $user = User::find($id);
+            if (!$user){
+                return response()->json(['message' => 'User not found'
+                ], 404);
+            }
+            $posts = $user->posts;
+            return response()->json([
+                'result'=>$posts, 
+                'message'=>'Posts fetched successfully'
+            ],200);
         }
-        $posts = $user->posts;
-        return response()->json($posts,200);
+        catch (Exception $e) {
+            return response()->json(['message' => 'Error: ' . $e->getMessage()
+        ], 500);
+        }
     }
 
     public function uploadImage(Request $request, $id)
@@ -58,7 +80,7 @@ class PostController extends Controller
 
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Error uploading image:'
+                'message' => 'Error uploading image: ' . $e->getMessage()
             ], 500);
         }
     }

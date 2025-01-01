@@ -18,23 +18,34 @@ class CommentController extends Controller
             $commentFields['user_id']= $request->user->id;
             $commentFields['post_id']= $post->id;
             Comment::create($commentFields);
-            return response()->json(['message'=>'Comment created successfully'],200);
+            return response()->json(['message'=>'Comment created successfully'
+            ],200);
         }
         catch (Exception $e) {
-            print($e."Oops! Something went wrong");
+            return response()->json(['message' => 'Error: ' . $e->getMessage()
+            ], 500);
         }
 
 
     }
 
     public function showComments($id){
-        $post = Post::find($id);
-        if (!$post){
-            return response()->json(['message' => 'Post not found'], 404);
+        try {
+            $post = Post::find($id);
+            if (!$post){
+                return response()->json(['message' => 'Post not found. Error: ' . $e->getMessage()
+                ], 404);
+            }
+            $comments = $post->comments;
+            return response()->json(['result'=>$comments, 'message'=>'Comments fetched successfully'
+                ],200);
+            }
+        catch (Exception $e) {
+            return response()->json(['message' => 'Error: ' . $e->getMessage()
+            ], 500);  
         }
-        $comments = $post->comments;
-        return response()->json($comments,200);
-        }
+    }
 }
+
 
 
